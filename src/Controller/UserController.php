@@ -4,31 +4,35 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\UserRepository;
 use App\Form\UserType;
 use App\Util\FormErrorToArray;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends AbstractController
 {
     use FormErrorToArray;
 
+
+
     /**
      * @Route("/users", name="users", methods={"GET"} )
      */
-    public function index(UserRepository $users): Response
+    public function index(UserRepository $users, SerializerInterface $serializer): Response
     {
-        return $this->json($users->findAll());
+        return JsonResponse::fromJsonString($serializer->serialize($users->findAll(), "json", ['enable_max_depth' => true]));
     }
 
     /**
      * @Route("/users/{user}", name="users_show", requirements={"user"="\d+"}, methods={"GET"} )
      */
-    public function show(User $user): Response
+    public function show(User $user, SerializerInterface $serializer): Response
     {
-        return $this->json($user);
+        return JsonResponse::fromJsonString($serializer->serialize($user, "json", ['enable_max_depth' => true]));
     }
 
     /**
