@@ -24,7 +24,7 @@ class FollowController extends AbstractController
     }
 
     /**
-     * @Route("/users/{user}/follow/{follow}", name="follow", name="user_unfollow")
+     * @Route("/users/{user}/unfollow/{follow}", name="follow", name="user_unfollow")
      */
     public function unfollow(User $user, User $follow)
     {
